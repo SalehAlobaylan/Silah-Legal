@@ -1,0 +1,12 @@
+[submodule "Legal-Case-Management-System"]
+	path = Legal-Case-Management-System
+	url = https://github.com/SalehAlobaylan/Legal-Case-Management-System
+[submodule "Legal_Case_Management_Website"]
+	path = Legal_Case_Management_Website
+	url = https://github.com/SalehAlobaylan/Legal_Case_Management_Website
+[submodule "Legal-Case-Management-System-AI-Microservice"]
+	path = Legal-Case-Management-System-AI-Microservice
+	url = https://github.com/oShuail/Legal-Case-Management-System-AI-Microservice
+[submodule "GP-flutter"]
+	path = GP-flutter
+	url = https://github.com/salehalbatti/GP-flutter
