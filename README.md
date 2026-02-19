@@ -76,6 +76,9 @@ This is a meta-monorepo containing four interconnected microservices:
 **Key Features**:
 - Multi-tenant organization support
 - Full CRUD operations for cases, clients, regulations
+- Regulation subscription monitoring with a dedicated worker runtime (`worker:reg-monitor`)
+- Hash-based regulation versioning with automatic version history creation
+- Basic monitor observability endpoints for health and recent run stats
 - Document management with file uploads (10MB limit)
 - User activity tracking and achievements
 - Real-time notifications
@@ -110,6 +113,8 @@ npm run dev           # Start development server
 **Key Features**:
 - Responsive dark/light theme with RTL support
 - Case management with AI-powered regulation suggestions
+- High-score regulation subscription suggestion flow on case AI suggestions
+- Regulation detail/version timeline view for tracking amendments
 - Client relationship management
 - Analytics dashboard
 - Real-time notifications
@@ -141,6 +146,8 @@ npm run dev           # Start development server
 - Semantic matching between case descriptions and regulations
 - Multilingual support (Arabic & English)
 - Confidence scoring (0.0-1.0) for relevance ranking
+- Regulation extraction endpoint for monitoring workflows (`POST /regulations/extract`)
+- OCR provider switching (`alAPI` primary, configurable fallback provider)
 - Batch processing support
 - ~200-500ms typical response time
 
