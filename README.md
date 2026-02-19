@@ -337,3 +337,23 @@ For questions or support, please contact [your contact information].
 ---
 
 **Silah (صلة)** - Connecting legal practitioners with intelligent case management.
+Admin:      ahmed@alfaisal-law.sa  / password123
+Senior Law: fatima@alfaisal-law.sa / password123
+Lawyer:     omar@alfaisal-law.sa   / password123
+Paralegal:  sara@alfaisal-law.sa / password123
+```
+
+### Organization 2: Riyadh Legal Consultants (EASY TO REMEMBER)
+```
+Admin:      admin@test.com  / test123
+Lawyer:     lawyer@test.com   / test123
+Paralegal:  sara@test.com    / test123
+```
+
+**Password Requirements**: Minimum 4 characters (reduced from 8 for easier testing)
+
+**To Re-seed Database**:
+```
+cd Legal-Case-Management-System
+npm run db:seed -- --force
+```
