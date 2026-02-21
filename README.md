@@ -80,6 +80,8 @@ This is a meta-monorepo containing four interconnected microservices:
 - Hash-based regulation versioning with automatic version history creation
 - Basic monitor observability endpoints for health and recent run stats
 - Document management with file uploads (10MB limit)
+- Async document extraction + case-focused AI insights pipeline (summary + related highlights)
+- Insights refresh/staleness handling when case narrative changes
 - User activity tracking and achievements
 - Real-time notifications
 - Rate limiting and security middleware
@@ -114,6 +116,7 @@ npm run dev           # Start development server
 - Responsive dark/light theme with RTL support
 - Case management with AI-powered regulation suggestions
 - High-score regulation subscription suggestion flow on case AI suggestions
+- Inline document insights (summary + highlights) in case details
 - Regulation detail/version timeline view for tracking amendments
 - Client relationship management
 - Analytics dashboard
@@ -147,6 +150,8 @@ npm run dev           # Start development server
 - Multilingual support (Arabic & English)
 - Confidence scoring (0.0-1.0) for relevance ranking
 - Regulation extraction endpoint for monitoring workflows (`POST /regulations/extract`)
+- Document extraction endpoint for case attachments (`POST /documents/extract`)
+- Case-focused document insights endpoint (`POST /documents/case-insights`)
 - OCR provider switching (`alAPI` primary, configurable fallback provider)
 - Batch processing support
 - ~200-500ms typical response time
