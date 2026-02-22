@@ -1,6 +1,6 @@
-# Git Submodules Guide - Wahb Monorepo
+# Git Submodules Guide - Silah-Legal Monorepo
 
-This document covers common commands for working with git submodules in the Wahb Project.
+This document covers common commands for working with git submodules in the Silah-Legal Project.
 
 ---
 
@@ -9,16 +9,17 @@ This document covers common commands for working with git submodules in the Wahb
 | Command | Task |
 |---------|------|
 | `git submodule update --init --recursive` | Initialize all submodules (first time setup) |
+| `git submodule foreach 'git checkout main'` | Checkout main branch for all submodules |
+| `git submodule foreach git pull origin main` | Pull latest changes for all submodules |
 | `git clone --recurse-submodules <url>` | Clone repo with all submodules in one command |
 | `git submodule status` | View status of all submodules |
 | `git submodule foreach 'echo $path'` | List all submodule paths |
 | `git submodule update --remote --merge` | Update all submodules to latest and merge |
 | `git submodule update --remote` | Update without merging (fetch only) |
-| `git submodule foreach git pull origin main` | Pull latest changes for all submodules |
 | `git submodule update --init --recursive` | Reset all submodules to committed state |
 | `git submodule foreach 'git branch'` | Show current branch in all submodules |
 | `git status` | See which submodules have changed |
-| `git diff Aggregation-Service` | See changes inside a submodule |
+| `git diff Legal-Case-Management-System` | See changes inside a submodule |
 | `git submodule foreach 'git log -1 --oneline'` | See last commit for all submodules |
 | `git submodule foreach <command>` | Run any command in all submodules |
 | `git submodule deinit -f <path>` | Remove a submodule |
@@ -29,7 +30,7 @@ This document covers common commands for working with git submodules in the Wahb
 ## First-Time Setup
 
 ### Clone and Initialize All Submodules
-When you first clone the Wahb monorepo, the submodule folders will be empty. Run:
+When you first clone the Silah-Legal monorepo, the submodule folders will be empty. Run:
 
 ```bash
 git submodule update --init --recursive
@@ -38,13 +39,13 @@ git submodule update --init --recursive
 **What it does:**
 - `--init`: Initializes all submodules listed in `.gitmodules`
 - `--recursive`: Also initializes any nested submodules
-- Clones all 5 services into their respective folders
+- Clones all 4 services into their respective folders
 
 ### Alternative: Clone in One Command
 If you haven't cloned the repo yet:
 
 ```bash
-git clone --recurse-submodules https://github.com/SalehAlobaylan/Wahb-Project.git
+git clone --recurse-submodules https://github.com/SalehAlobaylan/Silah-Legal.git
 ```
 
 ---
@@ -57,10 +58,10 @@ git submodule status
 ```
 
 **Output indicators:**
-- `1a53993... Aggregation-Service` (no prefix) → Submodule is initialized and at the correct commit
-- `-1a53993... Aggregation-Service` (minus sign) → Submodule not initialized
-- `+1a53993... Aggregation-Service` (plus sign) → Submodule has uncommitted changes
-- `U1a53993... Aggregation-Service` (U) → Submodule has merge conflicts
+- `1a53993... Legal-Case-Management-System` (no prefix) → Submodule is initialized and at the correct commit
+- `-1a53993... Legal-Case-Management-System` (minus sign) → Submodule not initialized
+- `+1a53993... Legal-Case-Management-System` (plus sign) → Submodule has uncommitted changes
+- `U1a53993... Legal-Case-Management-System` (U) → Submodule has merge conflicts
 
 ### List All Submodules
 ```bash
@@ -106,7 +107,7 @@ This resets all submodules to the commits specified in the main repo.
 
 ### Navigate to a Submodule
 ```bash
-cd Aggregation-Service
+cd Legal-Case-Management-System
 ```
 
 ### Make Changes in a Submodule
@@ -121,8 +122,8 @@ cd Aggregation-Service
 4. Go back to main repo and update the reference:
    ```bash
    cd ..
-   git add Aggregation-Service
-   git commit -m "Update Aggregation-Service submodule"
+   git add Legal-Case-Management-System
+   git commit -m "Update Legal-Case-Management-System submodule"
    ```
 
 ### Check Submodule Branch
@@ -146,7 +147,7 @@ git submodule update --init --recursive
 Navigate to the service, check out a branch, and work:
 
 ```bash
-cd Content-Management-System
+cd Legal_Case_Management_Website
 git checkout -b feature/new-feature
 # Make changes, commit, push
 ```
@@ -155,7 +156,7 @@ git checkout -b feature/new-feature
 If you see `(HEAD detached at 1a53993)`:
 
 ```bash
-cd Aggregation-Service
+cd Legal-Case-Management-System
 git checkout main
 # OR create a new branch from the detached commit
 git checkout -b my-feature-branch
@@ -166,9 +167,9 @@ git checkout -b my-feature-branch
 
 ```bash
 # Remove each submodule
-git submodule deinit -f Aggregation-Service
-git rm -f Aggregation-Service
-rm -rf .git/modules/Aggregation-Service
+git submodule deinit -f Legal-Case-Management-System
+git rm -f Legal-Case-Management-System
+rm -rf .git/modules/Legal-Case-Management-System
 
 # Repeat for all submodules...
 ```
@@ -184,13 +185,13 @@ git status
 
 Output will show:
 ```
-modified:   Aggregation-Service (new commits)
-modified:   Wahb-Platform (new commits)
+modified:   Legal-Case-Management-System (new commits)
+modified:   Legal_Case_Management_Website (new commits)
 ```
 
 ### See Changes Inside a Submodule
 ```bash
-git diff Aggregation-Service
+git diff Legal-Case-Management-System
 ```
 
 ### See All Submodule Logs
@@ -210,15 +211,15 @@ git submodule update --init --recursive
 ### Submodule Shows Modified but No Changes
 If `git status` shows a submodule as modified but you didn't change anything:
 ```bash
-cd Aggregation-Service
+cd Legal-Case-Management-System
 git checkout main
 cd ..
-git add Aggregation-Service
+git add Legal-Case-Management-System
 ```
 
 ### Submodule has Merge Conflicts
 ```bash
-cd Content-Management-System
+cd Legal_Case_Management_Website
 # Resolve conflicts
 git add .
 git commit
@@ -258,12 +259,11 @@ git submodule update --remote --no-merge
 
 ---
 
-## Wahb Project Submodules
+## Silah-Legal Project Submodules
 
 | Submodule | Path | Remote Repository |
 |-----------|------|-------------------|
-| Aggregation-Service | `./Aggregation-Service` | `https://github.com/SalehAlobaylan/Aggregation-Service` |
-| CRM-Service | `./CRM-Service` | `https://github.com/SalehAlobaylan/CRM-Service` |
-| Content-Management-System | `./Content-Management-System` | `https://github.com/SalehAlobaylan/Content-Management-System` |
-| Platform-Console | `./Platform-Console` | `https://github.com/SalehAlobaylan/Platform-Console` |
-| Wahb-Platform | `./Wahb-Platform` | `https://github.com/SalehAlobaylan/Wahb-Platform` |
+| Legal-Case-Management-System | `./Legal-Case-Management-System` | `https://github.com/SalehAlobaylan/Legal-Case-Management-System` |
+| Legal_Case_Management_Website | `./Legal_Case_Management_Website` | `https://github.com/SalehAlobaylan/Legal_Case_Management_Website` |
+| Legal-Case-Management-System-AI-Microservice | `./Legal-Case-Management-System-AI-Microservice` | `https://github.com/oShuail/Legal-Case-Management-System-AI-Microservice` |
+| GP-flutter | `./GP-flutter` | `https://github.com/salehalbatti/GP-flutter` |
