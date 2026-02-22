@@ -75,6 +75,14 @@ This is a meta-monorepo containing four interconnected microservices:
 
 **Key Features**:
 - Multi-tenant organization support
+- Personal-first onboarding:
+  - users can sign up without entering organization details
+  - each user gets a personal workspace organization by default
+- Organization lifecycle management:
+  - create organization after account creation
+  - join organization via invitation code
+  - invite/remove members and update member roles
+  - leave organization with automatic fallback to personal workspace
 - Full CRUD operations for cases, clients, regulations
 - Regulation subscription monitoring with a dedicated worker runtime (`worker:reg-monitor`)
 - Hash-based regulation versioning with automatic version history creation
@@ -114,6 +122,9 @@ npm run dev           # Start development server
 
 **Key Features**:
 - Responsive dark/light theme with RTL support
+- Updated auth and organization UX:
+  - Personal or Create-Organization registration modes
+  - Settings page supports invite by email, accept invite code, role updates, member removal, and leave-organization
 - Case management with AI-powered regulation suggestions
 - High-score regulation subscription suggestion flow on case AI suggestions
 - Inline document insights (summary + highlights) in case details
