@@ -7,6 +7,7 @@ An AI-powered legal case management platform designed specifically for Saudi leg
 Silah-Legal is a full-stack legal technology platform that combines:
 
 - **AI-Powered Regulation Linking**: Automatically connects cases with relevant Saudi Arabian laws using semantic similarity matching
+- **MOJ Regulation Source Sync**: Automatically crawls and syncs the latest regulations from [MOJ Laws](https://laws.moj.gov.sa/ar/legislations-regulations?pageNumber=1&pageSize=9&sortingBy=7)
 - **Multi-Platform Support**: Web dashboard and mobile applications
 - **Bilingual Interface**: Full Arabic and English localization with RTL support
 - **Real-Time Collaboration**: Live updates and notifications across team members
@@ -102,6 +103,8 @@ This is a meta-monorepo containing four interconnected microservices:
 - Full CRUD operations for cases, clients, regulations
 - Regulation subscription monitoring with a dedicated worker runtime (`worker:reg-monitor`)
 - Hash-based regulation versioning with automatic version history creation
+- MOJ source sync endpoints + worker cycle to ingest latest regulations and materialize versions
+- Regulation version compare API (`GET /api/regulations/:id/compare`)
 - Basic monitor observability endpoints for health and recent run stats
 - Document management with file uploads (10MB limit)
 - Async document extraction + case-focused AI insights pipeline (summary + related highlights)
@@ -145,6 +148,7 @@ npm run dev           # Start development server
 - High-score regulation subscription suggestion flow on case AI suggestions
 - Inline document insights (summary + highlights) in case details
 - Regulation detail/version timeline view for tracking amendments
+- Side-by-side regulation version compare in regulation details
 - Client relationship management
 - Analytics dashboard
 - Real-time notifications
