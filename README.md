@@ -14,6 +14,22 @@ Silah-Legal is a full-stack legal technology platform that combines:
 
 ---
 
+## Quick Setup
+
+```bash
+# First-time setup - Initialize all submodules
+git submodule update --init --recursive
+
+# Checkout main branch for all submodules
+git submodule foreach 'git checkout main'
+
+# Every time you start work - Pull latest changes in all submodules
+git submodule foreach git pull origin main
+
+# Check submodule status
+git submodule status
+```
+
 ## Repository Structure
 
 This is a meta-monorepo containing four interconnected microservices:
