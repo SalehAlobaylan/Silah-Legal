@@ -15,6 +15,7 @@ Silah-Legal is a full-stack legal technology platform that combines:
 
 ---
 
+
 ## Quick Setup
 
 ```bash
@@ -30,6 +31,47 @@ git submodule foreach git pull origin main
 # Check submodule status
 git submodule status
 ```
+## Running the Services
+
+> **Shortcut:** Run `./start.sh` to start all services (Backend, Worker, AI, Frontend) in one command. Logs go to `.logs/`; press Ctrl+C to stop everything.
+
+| Service | URL |
+|---|---|
+| Frontend (Next.js) | http://localhost:3000 |
+| Backend API (Fastify) | http://localhost:3001 |
+| AI Microservice (FastAPI) | http://localhost:8000 |
+
+**Terminal 1 — Backend:**
+```bash
+cd Legal-Case-Management-System
+npm install && npm run db:push
+npm run dev
+```
+
+**Terminal 1b — Background Worker** (required for document extraction & AI insights):
+```bash
+cd Legal-Case-Management-System
+npm run worker:reg-monitor
+```
+
+**Terminal 2 — AI Microservice:**
+```bash
+cd Legal-Case-Management-System-AI-Microservice
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+cd ai_service
+uvicorn app.main:app --reload --port 8000
+```
+
+**Terminal 3 — Frontend:**
+```bash
+cd Legal_Case_Management_Website
+npm install
+npm run dev
+```
+
+---
 
 ## Repository Structure
 
@@ -119,10 +161,10 @@ cd Legal-Case-Management-System
 npm install
 cp .env.example .env  # Configure your environment
 npm run db:push       # Setup database schema
-npm run dev           # Start development server
+npm run dev           # Start development server on http://localhost:3001
 ```
 
-**API Documentation**: Visit `http://localhost:3000/docs` when running
+**API Documentation**: Visit `http://localhost:3001/docs` when running
 
 ---
 
@@ -159,10 +201,10 @@ npm run dev           # Start development server
 cd Legal_Case_Management_Website
 npm install
 cp .env.example .env  # Configure API endpoint
-npm run dev           # Start development server
+npm run dev           # Start development server on http://localhost:3000
 ```
 
-**Access**: `http://localhost:3001`
+**Access**: `http://localhost:3000`
 
 ---
 
@@ -193,7 +235,10 @@ cd Legal-Case-Management-System-AI-Microservice
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
-uvicorn ai_service.app.main:app --reload
+
+# Must run uvicorn from inside the ai_service/ subdirectory
+cd ai_service
+uvicorn app.main:app --reload --port 8000
 ```
 
 **Or with Docker**:
@@ -201,7 +246,7 @@ uvicorn ai_service.app.main:app --reload
 docker-compose up
 ```
 
-**API Endpoint**: `POST /similarity/find-related`
+**API Docs**: `http://localhost:8000/docs` | **API Endpoint**: `POST /similarity/find-related`
 
 ---
 
@@ -252,7 +297,7 @@ git submodule update --init --recursive
 
 1. **Start PostgreSQL** (ensure it's running on localhost:5432)
 
-2. **Setup Backend API**:
+2. **Setup Backend API** (runs on port 3001):
 ```bash
 cd Legal-Case-Management-System
 npm install
@@ -262,16 +307,23 @@ npm run db:push
 npm run dev
 ```
 
-3. **Start AI Microservice** (in a new terminal):
+2b. **Start the background worker** (in a separate terminal — required for document extraction & AI insights):
+```bash
+cd Legal-Case-Management-System
+npm run worker:reg-monitor
+```
+
+3. **Start AI Microservice** (in a new terminal, runs on port 8000):
 ```bash
 cd Legal-Case-Management-System-AI-Microservice
 python -m venv venv
-source venv/bin/activate
+source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-uvicorn ai_service.app.main:app --reload --port 8000
+cd ai_service                   # must activate venv BEFORE this step
+uvicorn app.main:app --reload --port 8000
 ```
 
-4. **Start Frontend** (in a new terminal):
+4. **Start Frontend** (in a new terminal, runs on port 3000):
 ```bash
 cd Legal_Case_Management_Website
 npm install
@@ -281,9 +333,9 @@ npm run dev
 ```
 
 5. **Access the Application**:
-- Frontend: `http://localhost:3001`
-- Backend API: `http://localhost:3000/docs`
-- AI Service: `http://localhost:8000/docs`
+- Frontend: `http://localhost:3000`
+- Backend API Docs: `http://localhost:3001/docs`
+- AI Service Docs: `http://localhost:8000/docs`
 
 ---
 
@@ -294,24 +346,25 @@ npm run dev
 DATABASE_URL=postgresql://user:password@localhost:5432/silah_legal
 JWT_SECRET=your-secret-key
 JWT_EXPIRES_IN=7d
-PORT=3000
+PORT=3001
 AI_SERVICE_URL=http://localhost:8000
 ```
 
 ### Frontend (.env)
 ```bash
-NEXT_PUBLIC_API_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_WS_URL=http://localhost:3001
 ```
 
 ### AI Service (.env)
 ```bash
 APP_NAME=Silah AI Service
 APP_VERSION=1.0.0
-ENVIRONMENT=development
+ENV=development
 HOST=0.0.0.0
 PORT=8000
-EMBEDDINGS_MODEL=bge  # or 'fake' for testing
-CORS_ORIGINS=http://localhost:3001
+EMBEDDINGS_PROVIDER=bge  # or 'fake' for fast local testing (no model download)
+CORS_ORIGINS=["http://localhost:3000","http://localhost:3001"]
 ```
 
 ---
