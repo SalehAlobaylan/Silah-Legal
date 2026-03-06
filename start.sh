@@ -51,7 +51,6 @@ start_backend() {
   (
     cd "$ROOT_DIR/Legal-Case-Management-System" || exit 1
     npm install --silent
-    npm run db:push
     npm run dev
   ) > "$LOGS_DIR/backend.log" 2>&1 &
   PIDS+=($!)
@@ -66,7 +65,7 @@ start_worker() {
     npm run worker:reg-monitor
   ) > "$LOGS_DIR/worker.log" 2>&1 &
   PIDS+=($!)
-  echo -e "  Worker started ${GREEN}(PID: ${PIDS[-1]})${NC}"
+  echo -e "  Worker started ${GREEN}(PID: ${PIDS[$((${#PIDS[@]}-1))]})${NC}"
 }
 
 # ── AI Microservice ────────────────────────────

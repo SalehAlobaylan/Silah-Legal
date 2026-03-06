@@ -119,6 +119,26 @@ This is a meta-monorepo containing four interconnected microservices:
 
 ---
 
+## Regulation Extraction and AI Analysis Order
+
+For regulation content quality, the platform uses a hybrid pipeline in this exact order:
+
+1. **Parser-first extraction** (HTML/PDF/DOCX/text parsing)
+2. **OCR fallback** for scanned/low-text PDF or image sources (primary provider, then secondary provider)
+3. **LLM analysis after extraction** for structured legal insights and amendment impact (not for raw text extraction)
+
+This means regulation extraction is **not LLM-first**. LLM is used only after clean text is available.
+
+Implementation references:
+- Backend orchestration:
+  - `Legal-Case-Management-System/src/services/regulation-source.service.ts`
+- AI extraction pipeline:
+  - `Legal-Case-Management-System-AI-Microservice/ai_service/app/core/extraction.py`
+- AI analysis endpoints:
+  - `Legal-Case-Management-System-AI-Microservice/ai_service/app/api/routes/regulation_insights.py`
+
+---
+
 ## Components
 
 ### 1. Backend API - Legal-Case-Management-System
@@ -348,6 +368,15 @@ JWT_SECRET=your-secret-key
 JWT_EXPIRES_IN=7d
 PORT=3001
 AI_SERVICE_URL=http://localhost:8000
+CASE_LINK_TOP_K_FINAL=5
+CASE_LINK_STRICT_MODE=true
+CASE_LINK_MIN_FINAL_SCORE=0.72
+CASE_LINK_MIN_SUPPORTING_MATCHES=2
+CASE_LINK_MIN_PAIR_SCORE=0.68
+REG_LINK_PREFILTER_TOP_K=250
+REG_LINK_CANDIDATE_CHUNKS_PER_REG=4
+REG_LINK_CHUNK_CHARS=1200
+REG_LINK_MAX_CHUNKS=400
 ```
 
 ### Frontend (.env)
@@ -365,6 +394,10 @@ HOST=0.0.0.0
 PORT=8000
 EMBEDDINGS_PROVIDER=bge  # or 'fake' for fast local testing (no model download)
 CORS_ORIGINS=["http://localhost:3000","http://localhost:3001"]
+OCR_PRIMARY_PROVIDER=alapi
+OCR_SECONDARY_PROVIDER=none
+OCR_MIN_TEXT_CHARS=400
+OCR_STRICT_MODE=false
 ```
 
 ---
@@ -373,6 +406,16 @@ CORS_ORIGINS=["http://localhost:3000","http://localhost:3001"]
 
 ### AI-Powered Regulation Linking
 When creating a case, lawyers can click "Generate AI Suggestions" to automatically find relevant Saudi regulations based on the case description. The system uses semantic similarity to rank regulations by relevance.
+
+Recent upgrades:
+- Explainable linking with matched evidence:
+  - case/document fragments that supported the match
+  - regulation chunk/line ranges and article references when available
+  - score breakdown for confidence computation
+- Stricter relevance control with configurable thresholds and strict mode gates
+- Regulation chunk indexing + semantic prefiltering for stronger candidate quality
+- Backfill support for historical regulation chunking via backend script: `npm run backfill:reg-chunks`
+- OCR remains active in extraction (parser-first, OCR fallback) to improve matching quality on scanned/low-text files
 
 ### Case Types Supported
 - Criminal

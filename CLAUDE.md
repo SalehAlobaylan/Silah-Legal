@@ -94,7 +94,8 @@ cd Legal-Case-Management-System-AI-Microservice
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-uvicorn ai_service.app.main:app --reload
+cd ai_service
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 3. **Frontend Dashboard** (port 3001):
