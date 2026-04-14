@@ -1,3 +1,6 @@
 .logs
 .DS_Store
 .claude/
+.env
+.env.local
+excalidraw.log

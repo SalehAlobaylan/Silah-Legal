@@ -15,6 +15,33 @@ Silah-Legal is a full-stack legal technology platform that combines:
 
 ---
 
+## 20+ Integrated Legal Systems
+
+Silah-Legal is composed of over 20 integrated subsystems, providing a fully comprehensive law firm management operating system:
+
+1. **CRM & Client Management Engine** (نظام إدارة العملاء)
+2. **Case Management System** (نظام إدارة القضايا)
+3. **Hearings & Deadlines Tracker** (نظام المواعيد والجلسات)
+4. **AI Regulation Linking Studio** (استوديو الربط الذكي للأنظمة)
+5. **Regulations Library & Monitor** (المكتبة القانونية ومراقبة التحديثات)
+6. **Regulation Version Comparison** (نظام مقارنة إصدارات الأنظمة)
+7. **AI Regulation Summarizer** (نظام تلخيص الأنظمة بالذكاء الاصطناعي)
+8. **Document Management Vault** (محفظة المستندات)
+9. **Arabic OCR & Extraction by UMQ** (نظام استخراج النصوص للغة العربية)
+10. **AI Document Insights** (نظام استنباط الرؤى من المستندات)
+11. **Secure Roles & Permissions / RBAC** (نظام الصلاحيات وإدارة الوصول)
+12. **Notification Engine** (نظام الإشعارات اللحظية)
+13. **Bilingual Interface & Locale System** (نظام تعدد اللغات والتعريب)
+14. **Organization Management** (نظام إدارة المنشآت وفرق العمل)
+15. **Payment & Subscription Gateway** (نظام الدفع والاشتراكات)
+16. **AI Chat & Legal Assistant** (المساعد القانوني الذكي)
+17. **Automated Client Intake Forms** (نظام نماذج طلبات العملاء)
+18. **External Client Portal** (بوابة العملاء الخارجية)
+19. **Real-Time WebSocket Gateway** (بوابة الاتصال اللحظي)
+20. **Unified Dashboard & Command Center** (لوحة القيادة الموحدة)
+
+---
+
 
 ## Quick Setup
 
