@@ -80,7 +80,7 @@ start_ai() {
     source venv/bin/activate
     pip install -r requirements.txt -q
     cd ai_service || exit 1
-    uvicorn app.main:app --reload --port 8000
+    uvicorn app.main:app --port 8000
   ) > "$LOGS_DIR/ai.log" 2>&1 &
   PIDS+=($!)
   wait_for_port 8000 "AI Service"

@@ -3,4 +3,4 @@
 .claude/
 .env
 .env.local
-excalidraw.log
+/excalidraw.log
