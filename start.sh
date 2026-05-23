@@ -32,7 +32,9 @@ trap cleanup SIGINT SIGTERM
 wait_for_port() {
   local port=$1
   local service=$2
-  local retries=30
+  # Default 30s; callers can pass a longer timeout. The AI service's first boot
+  # has to load the BGE-M3 model (~50s cold, much faster once cached).
+  local retries="${3:-30}"
   echo -ne "  Waiting for ${service} on port ${port}..."
   while ! nc -z localhost "$port" 2>/dev/null; do
     sleep 1
@@ -59,10 +61,10 @@ start_backend() {
 
 # ── Background Worker ──────────────────────────
 start_worker() {
-  echo -e "${BLUE}▶  Starting Background Worker (reg-monitor)...${NC}"
+  echo -e "${BLUE}▶  Starting Background Worker (combined: scheduler + extraction)...${NC}"
   (
     cd "$ROOT_DIR/Legal-Case-Management-System" || exit 1
-    npm run worker:reg-monitor
+    npm run worker
   ) > "$LOGS_DIR/worker.log" 2>&1 &
   PIDS+=($!)
   echo -e "  Worker started ${GREEN}(PID: ${PIDS[$((${#PIDS[@]}-1))]})${NC}"
@@ -73,8 +75,12 @@ start_ai() {
   echo -e "${BLUE}▶  Starting AI Microservice (port 8000)...${NC}"
   (
     cd "$ROOT_DIR/Legal-Case-Management-System-AI-Microservice" || exit 1
+    # Pin to python3.13 — `python3` on this machine resolves to 3.14, which
+    # numpy 2.x supports but torch's prebuilt wheels do not (yet). 3.13 has
+    # wheels for everything in requirements.txt.
+    PYTHON_BIN="${PYTHON_BIN:-python3.13}"
     if [ ! -d "venv" ]; then
-      python3 -m venv venv
+      "$PYTHON_BIN" -m venv venv
     fi
     # shellcheck disable=SC1091
     source venv/bin/activate
@@ -83,7 +89,8 @@ start_ai() {
     uvicorn app.main:app --port 8000
   ) > "$LOGS_DIR/ai.log" 2>&1 &
   PIDS+=($!)
-  wait_for_port 8000 "AI Service"
+  # 120s — first boot loads the BGE-M3 model (~50s cold). Subsequent boots are faster.
+  wait_for_port 8000 "AI Service" 120
 }
 
 # ── Frontend ───────────────────────────────────
