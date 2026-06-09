@@ -1,0 +1,48 @@
+%% Sample output for catalog prompt #1 (Overall System Architecture).
+%% Generated from check-diagram-facts.sh output — every node/edge is code-backed.
+%% This file is the END-TO-END PROOF that a catalog prompt yields a valid,
+%% renderable diagram. Regenerate via the prompt; re-render with mermaid-cli.
+flowchart TB
+  subgraph clients["Clients"]
+    web["Legal_Case_Management_Website<br/>Next.js 16 · :3001"]
+    mob["GP-flutter<br/>Flutter · mobile"]
+  end
+
+  subgraph core["Application"]
+    be["Legal-Case-Management-System<br/>Fastify · :3000 · owns DB"]
+    ai["Legal-Case-Management-System-AI-Microservice<br/>FastAPI · :8000 · STATELESS<br/>11 routers · 7-stage find-related"]
+  end
+
+  subgraph infra["Infrastructure (backend-owned)"]
+    db[("PostgreSQL<br/>51 Drizzle tables · org-scoped")]
+    redis[("Redis<br/>worker queues")]
+    s3[("S3 / MinIO<br/>documents")]
+  end
+
+  subgraph ext["External APIs"]
+    gem["Gemini<br/>verify / assistant"]
+    hf["Hugging Face<br/>BGE-M3 embeddings"]
+    ocr["ALAPI OCR"]
+    oauth["Google OAuth"]
+  end
+
+  %% user-JWT traffic (solid)
+  web -->|"REST + Socket.IO (JWT)"| be
+  mob -->|"REST + Socket.IO (JWT)"| be
+
+  %% internal service call (dashed = on-demand, never client-direct)
+  be -.->|"POST /similarity/find-related (internal)"| ai
+
+  %% backend is the SOLE db writer
+  be -->|"Drizzle (sole writer)"| db
+  be --> redis
+  be --> s3
+  be --> oauth
+
+  %% AI externals are called by the AI service only
+  ai -.-> gem
+  ai -.-> hf
+  ai -.-> ocr
+
+  classDef stateless stroke-dasharray:4 3;
+  class ai stateless;
